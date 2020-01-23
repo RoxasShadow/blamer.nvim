@@ -90,6 +90,10 @@ function! blamer#GetMessage(file, line_number, line_count) abort
     let l:info[l:property] = l:value
   endfor
 
+  let l:info['commit-id'] = split(l:lines[0], ' ')[0][0:6]
+  let l:remote = s:Head(split(system('git remote -v get-url origin'), '\n'))
+  let l:info['commit-url'] = l:remote . '/commit/' . l:info['commit-id']
+
   if l:result =~? 'Not committed yet'
     let l:info.author = 'You'
     let l:info.committer = 'You'
